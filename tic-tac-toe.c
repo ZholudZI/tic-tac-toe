@@ -22,12 +22,13 @@ void printField() {
 	}
 }
 
-void enterPos(unsigned int* row, unsigned int* column) {
+void playerTurn() {
+	unsigned int row = 0, column = 0;
 	bool is_correct = 0;
 	printf("Enter position (row, column): ");
 	while (!is_correct) {
-		scanf_s("%d %d", row, column);
-		if (*row < FIELD_SIDE && *column < FIELD_SIDE) {
+		scanf_s("%u %u", &row, &column);
+		if (row < FIELD_SIDE && column < FIELD_SIDE) {
 			is_correct = 1;
 		}
 		else
@@ -35,10 +36,10 @@ void enterPos(unsigned int* row, unsigned int* column) {
 			printf("Uncorrect enter. Please enter position again (row, column): ");
 		}
 	}
+	field[row][column] = 'X';
 }
 
 int main() {
-	unsigned int row = 0, column = 0;
-	enterPos(&row, &column);
-	printf("%d %d\n", row, column);
+	playerTurn();
+	printField();
 }
