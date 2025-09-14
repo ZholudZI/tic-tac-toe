@@ -48,6 +48,10 @@ void playerTurn(char player_side) {
 	field[row][column] = player_side;
 }
 
+void botTurn() {
+
+}
+
 unsigned int getGameStatus() {
 	//horizontal check
 	for (unsigned int row = 0; row < FIELD_SIDE; row++) {
@@ -122,7 +126,7 @@ unsigned int getGameStatus() {
 	return GAME_CONTINUE;
 }
 
-int main() {
+void main() {
 	while (!getGameStatus()) {
 		printField();
 		playerTurn(X);
@@ -131,5 +135,17 @@ int main() {
 			playerTurn(O);
 		}
 	}
-	printf("Game end");
+	printf("Game end! ");
+	switch (getGameStatus()) {
+		case X_WIN:
+			printf("X Wins!");
+			break;
+		case O_WIN:
+			printf("O Wins!");
+				break;
+		case DRAW:
+			printf("Draw");
+				break;
+	}
+	system("pause");
 }
