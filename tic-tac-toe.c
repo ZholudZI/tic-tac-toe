@@ -49,7 +49,7 @@ void playerTurn(char player_side) {
 }
 
 void botTurn() {
-
+	
 }
 
 unsigned int getGameStatus() {
