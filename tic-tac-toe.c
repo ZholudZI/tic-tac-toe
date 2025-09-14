@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 #define FIELD_SIDE 3
+//Player sides:
+#define X 'X'
+#define O 'O'
+//Game statuses:
 #define GAME_CONTINUE 0
 #define X_WIN 1
 #define O_WIN 2
@@ -24,15 +28,16 @@ void printField() {
 			printf("\n-----\n");
 		}
 	}
+	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 }
 
-void playerTurn() {
+void playerTurn(char player_side) {
 	unsigned int row = 0, column = 0;
 	bool is_correct = 0;
 	printf("Enter position (row, column): ");
 	while (!is_correct) {
 		scanf_s("%u %u", &row, &column);
-		if (row < FIELD_SIDE && column < FIELD_SIDE) {
+		if (row < FIELD_SIDE && column < FIELD_SIDE && field[row][column] == ' ') {
 			is_correct = 1;
 		}
 		else
@@ -40,7 +45,7 @@ void playerTurn() {
 			printf("Uncorrect enter. Please enter position again (row, column): ");
 		}
 	}
-	field[row][column] = 'X';
+	field[row][column] = player_side;
 }
 
 unsigned int getGameStatus() {
@@ -119,7 +124,12 @@ unsigned int getGameStatus() {
 
 int main() {
 	while (!getGameStatus()) {
-		playerTurn();
+		printField();
+		playerTurn(X);
+		printField();
+		if (!getGameStatus()) {
+			playerTurn(O);
+		}
 	}
 	printf("Game end");
 }
