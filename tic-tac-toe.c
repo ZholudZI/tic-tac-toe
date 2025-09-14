@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 #define FIELD_SIDE 3
+#define GAME_CONTINUE 0
+#define X_WIN 1
+#define O_WIN 2
+#define DRAW 3
 
 char field[FIELD_SIDE][FIELD_SIDE] = {
 	{' ', ' ', ' '},
@@ -9,8 +13,8 @@ char field[FIELD_SIDE][FIELD_SIDE] = {
 };
 
 void printField() {
-	for (int row = 0; row < FIELD_SIDE; row++) {
-		for (int colum = 0; colum < FIELD_SIDE; colum++) {
+	for (unsigned int row = 0; row < FIELD_SIDE; row++) {
+		for (unsigned int colum = 0; colum < FIELD_SIDE; colum++) {
 			printf("%c", field[row][colum]);
 			if (colum < 2) { //ToDo: Remove this condition
 				printf("|");
@@ -39,7 +43,83 @@ void playerTurn() {
 	field[row][column] = 'X';
 }
 
+unsigned int getGameStatus() {
+	//horizontal check
+	for (unsigned int row = 0; row < FIELD_SIDE; row++) {
+		unsigned int x_count = 0;
+		unsigned int o_count = 0;
+		for (unsigned int column = 0; column < FIELD_SIDE; column++) {
+			if (field[row][column] == 'X') {
+				x_count++;
+			}
+			else if (field[row][column] == 'O') o_count++;
+		}
+		if (x_count == FIELD_SIDE) {
+			return X_WIN;
+		}
+		else if (o_count == FIELD_SIDE) return O_WIN;
+	}
+
+	//vertical check
+	for (unsigned int column = 0; column < FIELD_SIDE; column++) {
+		unsigned int x_count = 0;
+		unsigned int o_count = 0;
+		for (unsigned int row = 0; row < FIELD_SIDE; row++) {
+			if (field[row][column] == 'X') {
+				x_count++;
+			}
+			else if (field[row][column] == 'O') o_count++;
+		}
+		if (x_count == FIELD_SIDE) {
+			return X_WIN;
+		}
+		else if (o_count == FIELD_SIDE) return O_WIN;
+	}
+
+	//main diagonal check
+	unsigned int x_count = 0;
+	unsigned int o_count = 0;
+	for (unsigned int diagonal_pos = 0; diagonal_pos < FIELD_SIDE; diagonal_pos++) {
+		if (field[diagonal_pos][diagonal_pos] == 'X') {
+			x_count++;
+		} 
+		else if (field[diagonal_pos][diagonal_pos] == 'O') o_count++;
+	}
+	if (x_count == FIELD_SIDE) {
+		return X_WIN;
+	}
+	else if (o_count == FIELD_SIDE) return O_WIN;
+
+	//antidiagonal check
+	x_count = 0;
+	o_count = 0;
+	for (unsigned int diagonal_pos = 0; diagonal_pos < FIELD_SIDE; diagonal_pos++) {
+		if (field[diagonal_pos][FIELD_SIDE - diagonal_pos - 1] == 'X') {
+			x_count++;
+		}
+		else if (field[diagonal_pos][FIELD_SIDE - diagonal_pos - 1] == 'O') o_count++;
+	}
+	if (x_count == FIELD_SIDE) {
+		return X_WIN;
+	}
+	else if (o_count == FIELD_SIDE) return O_WIN;
+
+	//draw check
+	unsigned int spaces_count = 0;
+	for (unsigned int row = 0; row < FIELD_SIDE; row++) {
+		for (unsigned int column = 0; column < FIELD_SIDE; column++)
+		{
+			if (field[row][column] == ' ') spaces_count++;
+		}
+	}
+	if (spaces_count == 0) return DRAW;
+
+	return GAME_CONTINUE;
+}
+
 int main() {
-	playerTurn();
-	printField();
+	while (!getGameStatus()) {
+		playerTurn();
+	}
+	printf("Game end");
 }
