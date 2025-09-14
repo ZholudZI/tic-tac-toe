@@ -122,6 +122,21 @@ unsigned int getGameStatus() {
 	return GAME_CONTINUE;
 }
 
+void printResults() {
+	printf("Game end! ");
+	switch (getGameStatus()) {
+	case X_WIN:
+		printf("X Wins!");
+		break;
+	case O_WIN:
+		printf("O Wins!");
+		break;
+	case DRAW:
+		printf("Draw");
+		break;
+	}
+}
+
 int main() {
 	while (!getGameStatus()) {
 		printField();
@@ -131,5 +146,5 @@ int main() {
 			playerTurn(O);
 		}
 	}
-	printf("Game end");
+	printResults();
 }
