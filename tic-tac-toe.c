@@ -28,13 +28,13 @@ void printField() {
 			printf("\n-----\n");
 		}
 	}
-	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+	printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 }
 
 void playerTurn(char player_side) {
 	unsigned int row = 0, column = 0;
 	bool is_correct = 0;
-	printf("Enter position (row, column): ");
+	printf("%c turn:\nEnter position (row, column): ", player_side);
 	while (!is_correct) {
 		scanf_s("%u %u", &row, &column);
 		if (row < FIELD_SIDE && column < FIELD_SIDE && field[row][column] == ' ') {
