@@ -36,7 +36,7 @@ void playerTurn(char player_side) {
 	bool is_correct = 0;
 	printf("%c turn:\nEnter position: ", player_side);
 	while (!is_correct) {
-		scanf_s("%u", &position);
+		scanf_s("%u", &position); //Try read char and convert it to int
 		if (position - 1 < FIELD_SIDE * FIELD_SIDE && field[position - 1] == ' ') {
 			is_correct = 1;
 		}
@@ -46,10 +46,6 @@ void playerTurn(char player_side) {
 		}
 	}
 	field[position - 1] = player_side;
-}
-
-void botTurn() {
-	
 }
 
 int getScore() {
@@ -64,6 +60,23 @@ int getScore() {
 		return 0;
 		break;
 	}
+}
+
+//void placePosition(char field[], unsigned int position, char player_side) {
+//	field[position] = player_side;
+//	if (!getScore()) {
+//		findVoidPos
+//	}
+//}
+//
+//void findVoidPos(char field[]) {
+//	for (unsigned int i = 0; i < FIELD_SIDE * FIELD_SIDE; i++) {
+//		if (field[i] == ' ') {}
+//	}
+//}
+
+void botTurn() {
+	
 }
 
 unsigned int getGameStatus() {
