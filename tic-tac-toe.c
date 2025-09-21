@@ -21,10 +21,10 @@ void initField() {
 void printField() {
 	for (unsigned int i = 0; i < FIELD_SIDE * FIELD_SIDE; i++) {
 		printf("%c", field[i]);
-		if (i % FIELD_SIDE < 2) { //ToDo: Remove this condition
+		if (i % FIELD_SIDE < FIELD_SIDE - 1) { //ToDo: Remove this condition
 			printf("|");
 		}
-		if (i % FIELD_SIDE == 2 && i < FIELD_SIDE * FIELD_SIDE - 1) {
+		if (i % FIELD_SIDE == FIELD_SIDE - 1 && i < FIELD_SIDE * FIELD_SIDE - 1) {
 			printf("\n-----\n");
 		}
 	}
