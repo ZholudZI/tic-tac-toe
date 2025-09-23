@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <limits.h>
 #define FIELD_SIDE 3
 //Player sides:
 #define X 'X'
@@ -48,13 +49,13 @@ void playerTurn(char player_side) {
 	field[position - 1] = player_side;
 }
 
-int getScore() {
-	switch (getGameStatus()) {
+int getScore(char field[]) {
+	switch (getGameStatus(field)) {
 	case X_WIN:
-		return -1;
+		return -10;
 		break;
 	case O_WIN:
-		return 1;
+		return 10;
 		break;
 	case DRAW:
 		return 0;
@@ -62,33 +63,61 @@ int getScore() {
 	}
 }
 
-//void placePosition(char field[], unsigned int position, char player_side) {
-//	field[position] = player_side;
-//	if (!getScore()) {
-//		findVoidPos
-//	}
-//}
-//
-//void findVoidPos(char field[]) {
-//	for (unsigned int i = 0; i < FIELD_SIDE * FIELD_SIDE; i++) {
-//		if (field[i] == ' ') {}
-//	}
-//}
-
-void botTurn() {
-	
+char invertSide(char player_side) {
+	if (player_side == X) return O;
+	return X;
 }
 
-unsigned int getGameStatus() {
+unsigned int botPos() {
+	unsigned int result_pos = 0;
+	//creating copy of array
+	char fieldCopy[FIELD_SIDE * FIELD_SIDE];
+	for (unsigned int i = 0; i < FIELD_SIDE * FIELD_SIDE; i++) {
+		fieldCopy[i] = field[i];
+	}
+
+	int max_score = INT_MIN;
+	for (unsigned int pos = 0; pos < FIELD_SIDE * FIELD_SIDE; pos++) {
+		if (fieldCopy[pos] == ' ') {
+			int thisScore = checkPos(fieldCopy, pos, O, deth++);
+			if (max_score < thisScore) {
+				max_score = thisScore;
+				result_pos = pos;
+			}
+		}
+	}
+	return result_pos;
+}
+
+int checkPos(char field[], unsigned int pos, char player_side) {
+	char fieldCopy[FIELD_SIDE * FIELD_SIDE];
+	for (unsigned int i = 0; i < FIELD_SIDE * FIELD_SIDE; i++) {
+		fieldCopy[i] = field[i];
+	}
+	fieldCopy[pos] = player_side;
+
+	int result_score = 0;
+	if (getGameStatus(field) == GAME_CONTINUE) {
+		for (unsigned int pos = 0; pos < FIELD_SIDE * FIELD_SIDE; pos++) {
+			if (fieldCopy[pos] == ' ') {
+				result_score += checkPos(fieldCopy, pos, invertSide(player_side));
+			}
+		}
+		return result_score;
+	}
+	return getScore(fieldCopy);
+}
+
+unsigned int getGameStatus(char field[]) {
 	//horizontal check
 	for (unsigned int row = 0; row < FIELD_SIDE; row++) {
 		unsigned int x_count = 0;
 		unsigned int o_count = 0;
 		for (unsigned int column = 0; column < FIELD_SIDE; column++) {
-			if (field[row * FIELD_SIDE + column] == 'X') {
+			if (field[row * FIELD_SIDE + column] == X) {
 				x_count++;
 			}
-			else if (field[row * FIELD_SIDE + column] == 'O') o_count++;
+			else if (field[row * FIELD_SIDE + column] == O) o_count++;
 		}
 		if (x_count == FIELD_SIDE) {
 			return X_WIN;
@@ -101,10 +130,10 @@ unsigned int getGameStatus() {
 		unsigned int x_count = 0;
 		unsigned int o_count = 0;
 		for (unsigned int row = 0; row < FIELD_SIDE; row++) {
-			if (field[row * FIELD_SIDE + column] == 'X') {
+			if (field[row * FIELD_SIDE + column] == X) {
 				x_count++;
 			}
-			else if (field[row * FIELD_SIDE + column] == 'O') o_count++;
+			else if (field[row * FIELD_SIDE + column] == O) o_count++;
 		}
 		if (x_count == FIELD_SIDE) {
 			return X_WIN;
@@ -116,10 +145,10 @@ unsigned int getGameStatus() {
 	unsigned int x_count = 0;
 	unsigned int o_count = 0;
 	for (unsigned int diagonal_pos = 0; diagonal_pos < FIELD_SIDE; diagonal_pos++) {
-		if (field[diagonal_pos * FIELD_SIDE + diagonal_pos] == 'X') {
+		if (field[diagonal_pos * FIELD_SIDE + diagonal_pos] == X) {
 			x_count++;
 		} 
-		else if (field[diagonal_pos * FIELD_SIDE + diagonal_pos] == 'O') o_count++;
+		else if (field[diagonal_pos * FIELD_SIDE + diagonal_pos] == O) o_count++;
 	}
 	if (x_count == FIELD_SIDE) {
 		return X_WIN;
@@ -130,10 +159,10 @@ unsigned int getGameStatus() {
 	x_count = 0;
 	o_count = 0;
 	for (unsigned int diagonal_pos = 0; diagonal_pos < FIELD_SIDE; diagonal_pos++) {
-		if (field[diagonal_pos * FIELD_SIDE + FIELD_SIDE - diagonal_pos - 1] == 'X') {
+		if (field[diagonal_pos * FIELD_SIDE + FIELD_SIDE - diagonal_pos - 1] == X) {
 			x_count++;
 		}
-		else if (field[diagonal_pos * FIELD_SIDE + FIELD_SIDE - diagonal_pos - 1] == 'O') o_count++;
+		else if (field[diagonal_pos * FIELD_SIDE + FIELD_SIDE - diagonal_pos - 1] == O) o_count++;
 	}
 	if (x_count == FIELD_SIDE) {
 		return X_WIN;
@@ -152,7 +181,7 @@ unsigned int getGameStatus() {
 
 void printResults() {
 	printf("Game end! ");
-	switch (getGameStatus()) {
+	switch (getGameStatus(field)) {
 	case X_WIN:
 		printf("X Wins!");
 		break;
@@ -167,11 +196,12 @@ void printResults() {
 
 int main() {
 	initField();
-	while (!getGameStatus()) {
+	while (!getGameStatus(field)) {
 		printField();
 		playerTurn(X);
 		printField();
-		if (!getGameStatus()) {
+		if (!getGameStatus(field)) {
+			printf("%d ", botPos() + 1);
 			playerTurn(O);
 		}
 	}
