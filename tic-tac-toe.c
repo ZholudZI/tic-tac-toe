@@ -79,7 +79,7 @@ unsigned int botPos() {
 	int max_score = INT_MIN;
 	for (unsigned int pos = 0; pos < FIELD_SIDE * FIELD_SIDE; pos++) {
 		if (fieldCopy[pos] == ' ') {
-			int thisScore = checkPos(fieldCopy, pos, O, deth++);
+			int thisScore = checkPos(fieldCopy, pos, O);
 			if (max_score < thisScore) {
 				max_score = thisScore;
 				result_pos = pos;
