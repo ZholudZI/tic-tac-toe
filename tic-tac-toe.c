@@ -68,7 +68,7 @@ char invertSide(char player_side) {
 	return X;
 }
 
-unsigned int botPos() {
+void botPos() {
 	unsigned int result_pos = 0;
 	//creating copy of array
 	char fieldCopy[FIELD_SIDE * FIELD_SIDE];
@@ -79,14 +79,14 @@ unsigned int botPos() {
 	int max_score = INT_MIN;
 	for (unsigned int pos = 0; pos < FIELD_SIDE * FIELD_SIDE; pos++) {
 		if (fieldCopy[pos] == ' ') {
-			int thisScore = checkPos(fieldCopy, pos, O, deth++);
+			int thisScore = checkPos(fieldCopy, pos, O);
 			if (max_score < thisScore) {
 				max_score = thisScore;
 				result_pos = pos;
 			}
 		}
 	}
-	return result_pos;
+	field[result_pos] = O;
 }
 
 int checkPos(char field[], unsigned int pos, char player_side) {
@@ -201,9 +201,9 @@ int main() {
 		playerTurn(X);
 		printField();
 		if (!getGameStatus(field)) {
-			printf("%d ", botPos() + 1);
-			playerTurn(O);
+			botPos();
 		}
 	}
+	printField();
 	printResults();
 }
