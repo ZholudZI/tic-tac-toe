@@ -105,7 +105,7 @@ unsigned int botPos() {
 			}
 		}
 	}
-	return result_pos;
+	field[result_pos] = O;
 }
 
 int minMax(char field[], unsigned int pos, char player_side) {
@@ -241,9 +241,9 @@ int main() {
 		playerTurn(X);
 		printField();
 		if (!getGameStatus(field)) {
-			printf("%d ", botPos() + 1);
-			playerTurn(O);
+			botPos();
 		}
 	}
+	printField();
 	printResults();
 }
