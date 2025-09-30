@@ -68,46 +68,6 @@ char invertSide(char player_side) {
 	return X;
 }
 
-//int checkPos(char field[], unsigned int pos, char player_side) {
-//	char fieldCopy[FIELD_SIDE * FIELD_SIDE];
-//	for (unsigned int i = 0; i < FIELD_SIDE * FIELD_SIDE; i++) {
-//		fieldCopy[i] = field[i];
-//	}
-//	fieldCopy[pos] = player_side;
-//
-//	int result_score = 0;
-//	if (getGameStatus(field) == GAME_CONTINUE) {
-//		for (unsigned int pos = 0; pos < FIELD_SIDE * FIELD_SIDE; pos++) {
-//			if (fieldCopy[pos] == ' ') {
-//				result_score += checkPos(fieldCopy, pos, invertSide(player_side));
-//			}
-//		}
-//		return result_score;
-//	}
-//	return getScore(fieldCopy);
-//}
-
-unsigned int botPos() {
-	unsigned int result_pos = 0;
-	//creating copy of array
-	char fieldCopy[FIELD_SIDE * FIELD_SIDE];
-	for (unsigned int i = 0; i < FIELD_SIDE * FIELD_SIDE; i++) {
-		fieldCopy[i] = field[i];
-	}
-
-	int max_score = INT_MIN;
-	for (unsigned int pos = 0; pos < FIELD_SIDE * FIELD_SIDE; pos++) {
-		if (fieldCopy[pos] == ' ') {
-			int thisScore = maxMin(fieldCopy, pos, O);
-			if (max_score < thisScore) {
-				max_score = thisScore;
-				result_pos = pos;
-			}
-		}
-	}
-	field[result_pos] = O;
-}
-
 int minMax(char field[], unsigned int pos, char player_side) {
 	char fieldCopy[FIELD_SIDE * FIELD_SIDE];
 	for (unsigned int i = 0; i < FIELD_SIDE * FIELD_SIDE; i++) {
@@ -146,6 +106,27 @@ int maxMin(char field[], unsigned int pos, char player_side) {
 		return min_score;
 	}
 	return getScore(fieldCopy);
+}
+
+unsigned int botPos() {
+	unsigned int result_pos = 0;
+	//creating copy of array
+	char fieldCopy[FIELD_SIDE * FIELD_SIDE];
+	for (unsigned int i = 0; i < FIELD_SIDE * FIELD_SIDE; i++) {
+		fieldCopy[i] = field[i];
+	}
+
+	int max_score = INT_MIN;
+	for (unsigned int pos = 0; pos < FIELD_SIDE * FIELD_SIDE; pos++) {
+		if (fieldCopy[pos] == ' ') {
+			int thisScore = maxMin(fieldCopy, pos, O);
+			if (max_score < thisScore) {
+				max_score = thisScore;
+				result_pos = pos;
+			}
+		}
+	}
+	field[result_pos] = O;
 }
 
 unsigned int getGameStatus(char field[]) {
