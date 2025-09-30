@@ -110,7 +110,7 @@ int maxMin(char field[], unsigned int pos, char player_side) {
 
 unsigned int botPos() {
 	unsigned int result_pos = 0;
-	//creating copy of array
+
 	char fieldCopy[FIELD_SIDE * FIELD_SIDE];
 	for (unsigned int i = 0; i < FIELD_SIDE * FIELD_SIDE; i++) {
 		fieldCopy[i] = field[i];
