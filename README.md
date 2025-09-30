@@ -1,3 +1,9 @@
+## ToDo
+- [ ] Add alpha-beta pruning
+- [ ] Add resizeable field 
+- [ ] Add a nice graphical interface
+- [ ] Add mode selection (two players / single player)
+
 ## Questions
 1. ```printf('j')``` - 0xc0000005;
 2. ```scanf_s("%u", &num)``` - почему при вводе символа выход за пределы массива;
