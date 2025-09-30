@@ -97,9 +97,49 @@ char invertSide(char player_side) {
 	return X;
 }
 
-void botPos() {
+int minMax(char field[], unsigned int pos, char player_side) {
+	char fieldCopy[FIELD_SIDE * FIELD_SIDE];
+	for (unsigned int i = 0; i < FIELD_SIDE * FIELD_SIDE; i++) {
+		fieldCopy[i] = field[i];
+	}
+	fieldCopy[pos] = player_side;
+
+	int max_score = INT_MIN;
+	if (getGameStatus(fieldCopy) == GAME_CONTINUE) {
+		for (unsigned int pos = 0; pos < FIELD_SIDE * FIELD_SIDE; pos++) {
+			if (fieldCopy[pos] == ' ') {
+				int thisScore = maxMin(fieldCopy, pos, invertSide(player_side));
+				if (max_score < thisScore) max_score = thisScore;
+			}
+		}
+		return max_score;
+	}
+	return getScore(fieldCopy);
+}
+
+int maxMin(char field[], unsigned int pos, char player_side) {
+	char fieldCopy[FIELD_SIDE * FIELD_SIDE];
+	for (unsigned int i = 0; i < FIELD_SIDE * FIELD_SIDE; i++) {
+		fieldCopy[i] = field[i];
+	}
+	fieldCopy[pos] = player_side;
+
+	int min_score = INT_MAX;
+	if (getGameStatus(fieldCopy) == GAME_CONTINUE) {
+		for (unsigned int pos = 0; pos < FIELD_SIDE * FIELD_SIDE; pos++) {
+			if (fieldCopy[pos] == ' ') {
+				int thisScore = minMax(fieldCopy, pos, invertSide(player_side));
+				if (min_score > thisScore) min_score = thisScore;
+			}
+		}
+		return min_score;
+	}
+	return getScore(fieldCopy);
+ }
+
+unsigned int botPos() {
 	unsigned int result_pos = 0;
-	//creating copy of array
+
 	char fieldCopy[FIELD_SIDE * FIELD_SIDE];
 	for (unsigned int i = 0; i < FIELD_SIDE * FIELD_SIDE; i++) {
 		fieldCopy[i] = field[i];
@@ -108,7 +148,7 @@ void botPos() {
 	int max_score = INT_MIN;
 	for (unsigned int pos = 0; pos < FIELD_SIDE * FIELD_SIDE; pos++) {
 		if (fieldCopy[pos] == ' ') {
-			int thisScore = checkPos(fieldCopy, pos, O);
+			int thisScore = maxMin(fieldCopy, pos, O);
 			if (max_score < thisScore) {
 				max_score = thisScore;
 				result_pos = pos;
@@ -116,25 +156,6 @@ void botPos() {
 		}
 	}
 	field[result_pos] = O;
-}
-
-int checkPos(char field[], unsigned int pos, char player_side) {
-	char fieldCopy[FIELD_SIDE * FIELD_SIDE];
-	for (unsigned int i = 0; i < FIELD_SIDE * FIELD_SIDE; i++) {
-		fieldCopy[i] = field[i];
-	}
-	fieldCopy[pos] = player_side;
-
-	int result_score = 0;
-	if (getGameStatus(field) == GAME_CONTINUE) {
-		for (unsigned int pos = 0; pos < FIELD_SIDE * FIELD_SIDE; pos++) {
-			if (fieldCopy[pos] == ' ') {
-				result_score += checkPos(fieldCopy, pos, invertSide(player_side));
-			}
-		}
-		return result_score;
-	}
-	return getScore(fieldCopy);
 }
 
 unsigned int getGameStatus(char field[]) {
