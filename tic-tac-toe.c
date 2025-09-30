@@ -108,16 +108,6 @@ int maxMin(char field[], unsigned int pos, char player_side) {
 	return getScore(fieldCopy);
  }
 
-//int maxMin(char field[], unsigned int pos, char player_side) {
-//	char fieldCopy[FIELD_SIDE * FIELD_SIDE];
-//	for (unsigned int i = 0; i < FIELD_SIDE * FIELD_SIDE; i++) {
-//		fieldCopy[i] = field[i];
-//	}
-//	fieldCopy[pos] = player_side;
-//
-//	 if (getGameStatus(fi)
-//}
-
 unsigned int botPos() {
 	unsigned int result_pos = 0;
 
