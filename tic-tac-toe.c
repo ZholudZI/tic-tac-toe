@@ -19,7 +19,36 @@ void initField() {
 	}
 }
 
+void printX() {
+
+}
+
+void printO() {
+
+}
+
+/*
+X   X | X   X | X   X
+ X X  |  X X  |  X X
+  X   |   X   |   X
+ X X  |  X X  |  X X
+X   X | X   X | X   X
+------|-------|------
+X   X |  OOO  | X   X
+ X X  | O   O |  X X
+  X   | O   O |   X
+ X X  | O   O |  X X
+X   X |  OOO  | X   X
+------|-------|------
+X   X | X   X | X   X
+ X X  |  X X  |  X X
+  X   |   X   |   X
+ X X  |  X X  |  X X
+X   X | X   X | X   X
+*/
+//22*17
 void printField() {
+	//char printableField[22*17];
 	for (unsigned int i = 0; i < FIELD_SIDE * FIELD_SIDE; i++) {
 		printf("%c", field[i]);
 		if (i % FIELD_SIDE < FIELD_SIDE - 1) { //ToDo: Remove this condition
