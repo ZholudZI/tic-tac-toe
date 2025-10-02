@@ -66,13 +66,12 @@ void playerTurn(char player_side) {
 	bool is_correct = 0;
 	printf("%c turn:\nEnter position: ", player_side);
 	while (!is_correct) {
-		scanf_s("%u", &position); //Try read char and convert it to int
-		if (position - 1 < FIELD_SIDE * FIELD_SIDE && field[position - 1] == ' ') {
+		if (scanf_s("%u", &position) && position - 1 < FIELD_SIDE * FIELD_SIDE && field[position - 1] == ' ') {
 			is_correct = 1;
 		}
-		else
-		{
+		else {
 			printf("Uncorrect enter. Please enter position again: ");
+			while (getchar() != '\n');
 		}
 	}
 	field[position - 1] = player_side;
